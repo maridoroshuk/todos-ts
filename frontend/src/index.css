@@ -1,0 +1,154 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  color: #444;
+  font-family: "Source Code Pro", monospace;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+h1 {
+  color: #cdaaaf;
+  font-size: 4rem;
+  opacity: 0.7;
+}
+
+.section {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-bottom: none;
+  max-width: 100%;
+  width: 400px;
+}
+
+.input {
+  border: none;
+  color: rgb(45, 57, 83);
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  display: block;
+  width: 100%;
+  outline: none;
+  font-family: "Source Code Pro", monospace;
+}
+
+.input::placeholder {
+  color: #dfd5d5;
+  font-style: italic;
+}
+
+.todos {
+  background-color: #fff;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  max-width: 100%;
+  width: 400px;
+}
+
+.todos li {
+  border-top: 1px solid #e5e5e5;
+  cursor: pointer;
+  padding: 1rem 4rem;
+  position: relative;
+  display: flex;
+  word-wrap: break-word;
+}
+
+.todos li.completed {
+  color: #b6b6b6;
+  text-decoration: line-through;
+}
+
+small {
+  margin-top: 3rem;
+  text-align: center;
+  color: #b6b6b6;
+}
+
+.complete-btn {
+  position: absolute;
+  left: 1rem;
+  align-self: center;
+  color: #cdaaaf;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid #cdaaaf;
+  width: 2.2rem;
+  height: 2.2rem;
+  opacity: 0.4;
+  transition: opacity 0.1s ease-in-out;
+}
+.complete-btn:hover {
+  opacity: 1;
+}
+
+.uncomplete-btn {
+  position: absolute;
+  left: 1rem;
+  align-self: center;
+  border-radius: 50%;
+  border: 2px solid #cdaaaf;
+  color: #cdaaaf;
+  background-color: transparent;
+  cursor: pointer;
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+.edit-btn {
+  position: absolute;
+  right: 3rem;
+  border: none;
+  align-self: center;
+  background-color: transparent;
+  color: rgb(157, 84, 95);
+  cursor: pointer;
+}
+
+.destroy-btn {
+  position: absolute;
+  right: 1rem;
+  align-self: center;
+  border: none;
+  background-color: transparent;
+  color: rgb(157, 84, 95);
+  cursor: pointer;
+}
+
+.filter-todo {
+  display: flex;
+  justify-content: center;
+}
+.filter-todo p {
+  margin: 1rem;
+  cursor: pointer;
+}
+.filter-todo p:hover {
+  color: #cdaaaf;
+}
+.input-todo {
+  outline: none;
+  border: none;
+  font-family: "Source Code Pro", monospace;
+  font-size: 1rem;
+}
+.empty-todo {
+  text-align: center;
+}
+
+.loader {
+  margin: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
