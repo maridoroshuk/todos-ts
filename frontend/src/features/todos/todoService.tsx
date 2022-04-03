@@ -1,4 +1,5 @@
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
+import { ApiDataType } from "../../models/todo"
 
 const API_URL = "/api/todo/"
 
@@ -10,14 +11,14 @@ const createTodo = async (data) => {
 }
 
 // Get user todo
-const getTodo = async (data) => {
+const getTodo = async (data): Promise<AxiosResponse<ApiDataType>> => {
   let getTodosUrl
   if (data.complete === undefined) {
     getTodosUrl = API_URL
   } else {
      getTodosUrl = `${API_URL}?complete=${data.complete}`
   }
-  const response = await axios.get(getTodosUrl)
+  const response: AxiosResponse<ApiDataType> = await axios.get(getTodosUrl)
 
   return response.data
 }

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from "react"
+import React, { ChangeEvent, FC, FormEvent, FormEventHandler, useState } from "react"
 import { useDispatch } from "react-redux"
 import { createTodo } from "../features/todos/todoSlice"
 
@@ -7,9 +7,8 @@ export const Form: FC = () => {
 
 	const dispatch = useDispatch()
 
-	const onSubmit = (e: ChangeEvent<HTMLInputElement>): void => {
-		e.preventDefault()
-
+	const onSubmit = (event: FormEvent<HTMLFormElement>): void => {
+		event.preventDefault()
 		dispatch(createTodo({ text, completed: false }))
 		setText("")
 	}
@@ -19,7 +18,7 @@ export const Form: FC = () => {
 	}
 
 	return (
-		<form id="form" htmlFor="" onSubmit={onSubmit}>
+		<form id="form"  onSubmit={onSubmit}>
 			<input
 				onChange={handleInputChange}
 				value={text}

@@ -1,9 +1,18 @@
 import React, { FC, useState } from "react"
 import { useDispatch } from "react-redux"
 import { deleteTodo, toggleTodo } from "../features/todos/todoSlice"
-import { TodoText } from "./TodoItemText"
+import { TodoText } from "./TodoText"
 
-export const TodoItem: FC = ({ todo }) => {
+type Props = {
+	todo: {
+		_id: any,
+		text: string,
+		complete: boolean
+	}
+}
+
+
+export const TodoItem: FC<Props> = ({ todo }) => {
 	const [inputVisible, setInputVisible] = useState<boolean>(false)
 
 	const dispatch = useDispatch()
