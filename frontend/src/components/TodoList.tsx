@@ -1,37 +1,41 @@
 import React, { FC, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { Spinner } from "./Spinner"
 import { TodoItem } from "./TodoItem"
 import { Form } from "./Form"
-import { getTodo, reset } from "../features/todos/todoSlice"
+import { useTypedSelector } from "../hooks/useTypedSelector"
+import { useActions } from "../hooks/useActions"
+import { Dispatch } from "react"
+import { TodoAction } from "../types/todo"
 
 export const TodoList: FC = () => {
-	const dispatch = useDispatch()
-
+	const dispatch: Dispatch<TodoAction> = useDispatch()
 	const {
- todoList, isLoading, isError, message
-} = useSelector(
-		(state) => state.todos
+		todoList, isLoading, isError, message
+	} = useTypedSelector(
+		(state) => state.todo
 	)
 
+	const { getTodos, reset } = useActions()
+
 	useEffect(() => {
-		dispatch(getTodo())
+		getTodos()
 		if (isError) {
 			console.log(message)
 		}
 		return () => {
-			dispatch(reset())
+			reset()
 		}
-	}, [isError, message, dispatch])
+	}, [isError, message])
 
 	const statusHandler = (e) => {
 		const status = e.target.innerText
 		if (status === "completed") {
-			dispatch(getTodo({ complete: true }))
+			getTodos({ complete: true })
 		} else if (status === "uncompleted") {
-			dispatch(getTodo({ complete: false }))
+			getTodos({ complete: false })
 		} else if (status === "all") {
-			dispatch(getTodo())
+			getTodos()
 		}
 	}
 
