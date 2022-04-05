@@ -1,6 +1,5 @@
 import React, { FC, FormEvent, useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
-import { editTodo } from "../features/todos/todoSlice"
+import { useActions } from "../hooks/useActions"
 
 interface TextProps {
   inputVisible: boolean
@@ -12,7 +11,8 @@ interface TextProps {
 export const TodoText: FC = (props: TextProps) => {
   const { inputVisible, todo, setInputVisible, onCompleteClick } = props
   const [textInput, setTextInput] = useState<string>(todo.text)
-  const dispatch = useDispatch()
+  
+  const { editTodo } = useActions()
 
   function onClickOutSide(e) {
     if (textInput && !textInput.contains(e.target)) {
@@ -37,7 +37,7 @@ export const TodoText: FC = (props: TextProps) => {
 
   const submitEditTextHandler = (event: FormEvent<HTMLInputElement>) => {
     e.preventDefault()
-    dispatch(editTodo({ id: todo._id, text: textInput }))
+    editTodo({ id: todo._id, text: textInput })
     setInputVisible(false)
   }
   return (
