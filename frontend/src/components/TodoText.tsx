@@ -1,10 +1,16 @@
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, FormEvent, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { editTodo } from "../features/todos/todoSlice"
 
-export const TodoText: FC = ({
-  inputVisible, todo, setInputVisible, onCompleteClick
-}) => {
+interface TextProps {
+  inputVisible: boolean
+  todo: string[]
+  setInputVisible: (p: boolean) => void
+  onCompleteClick: () => void
+}
+
+export const TodoText: FC = (props: TextProps) => {
+  const { inputVisible, todo, setInputVisible, onCompleteClick } = props
   const [textInput, setTextInput] = useState<string>(todo.text)
   const dispatch = useDispatch()
 
@@ -25,11 +31,11 @@ export const TodoText: FC = ({
     }
   })
 
-  const editTextHandle = (e) => {
-    setTextInput(e.target.value)
+  const editTextHandle = (event: FormEvent<HTMLInputElement>) => {
+    setTextInput(event.target.value)
   }
 
-  const submitEditTextHandler = (e) => {
+  const submitEditTextHandler = (event: FormEvent<HTMLInputElement>) => {
     e.preventDefault()
     dispatch(editTodo({ id: todo._id, text: textInput }))
     setInputVisible(false)

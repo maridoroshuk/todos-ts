@@ -1,15 +1,11 @@
 import React, { FC, useEffect } from "react"
-import { useDispatch } from "react-redux"
 import { Spinner } from "./Spinner"
 import { TodoItem } from "./TodoItem"
 import { Form } from "./Form"
 import { useTypedSelector } from "../hooks/useTypedSelector"
 import { useActions } from "../hooks/useActions"
-import { Dispatch } from "react"
-import { TodoAction } from "../types/todo"
 
 export const TodoList: FC = () => {
-	const dispatch: Dispatch<TodoAction> = useDispatch()
 	const {
 		todoList, isLoading, isError, message
 	} = useTypedSelector(

@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react"
 import { useDispatch } from "react-redux"
 import { deleteTodo, toggleTodo } from "../features/todos/todoSlice"
+import { useActions } from "../hooks/useActions"
 import { TodoText } from "./TodoText"
 
 type Props = {
@@ -15,14 +16,14 @@ type Props = {
 export const TodoItem: FC<Props> = ({ todo }) => {
 	const [inputVisible, setInputVisible] = useState<boolean>(false)
 
-	const dispatch = useDispatch()
+	const { toggleTodo, deleteTodo} = useActions()
 
-	const completeHandler = () => {
-		dispatch(toggleTodo({ id: todo._id, complete: !todo.complete }))
+	const completeHandler = (): void => {
+		toggleTodo({ id: todo._id, complete: !todo.complete })
 	}
 
-	const deleteHandler = () => {
-		dispatch(deleteTodo(todo._id))
+	const deleteHandler = (): void => {
+		deleteTodo(todo._id)
 	}
 
 	return (
