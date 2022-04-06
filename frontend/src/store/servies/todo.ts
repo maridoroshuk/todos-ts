@@ -1,20 +1,18 @@
 import axios from "axios"
+import { ITodoItem } from "../../types/todo"
 
 const API_URL = "/api/todo/"
 
-interface Data {
-    data: any
-    todoId: any
-}
+
 // Create new todo
-const createTodo = async (data: Data) => {
+const createTodo = async (data: ITodoItem) => {
   const response = await axios.post(API_URL, data)
 
   return response.data
 }
 
 // Get user todo
-const getTodo = async (data: Data) => {
+const getTodo = async (data?: {complete: boolean}) => {
   let getTodosUrl
   if (data === undefined) {
     getTodosUrl = API_URL
@@ -27,14 +25,14 @@ const getTodo = async (data: Data) => {
 }
 
 // Delete user todo
-const deleteTodo = async (todoId: Data) => {
+const deleteTodo = async (todoId: ITodoItem) => {
   const response = await axios.delete(API_URL + todoId)
 
   return response.data
 }
 
 // Update user todo
-const updateTodo = async (todoId: Data, data: Data) => {
+const updateTodo = async (todoId: any, data: {complete?: boolean, text?: string}) => {
   const response = await axios.put(API_URL + todoId, data)
 
   return response.data

@@ -1,20 +1,19 @@
+import { ITodoItem } from './../../types/todo';
 import { todoService } from './../servies/todo';
-import axios from "axios"
 import { Dispatch } from "react"
 import { TodoAction, TodoActionTypes } from "../../types/todo"
-import { text } from 'stream/consumers';
 
-interface Data {
-        id?: any
-        text?: string,
-        complete?: boolean
-}
 
-export const getTodos = (data?: Data) => {
-    return async (dispatch: Dispatch<TodoAction>) => {
+
+export const getTodos = (data?: ITodoItem) => {
+    return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
             dispatch({ type: TodoActionTypes.GET_TODOS })
-            const response = await todoService.getTodo(data.complete)
+            let response
+            if (data) {
+                response = await todoService.getTodo((<any>data).complete)
+            }
+            response = await todoService.getTodo()
             dispatch({ type: TodoActionTypes.GET_TODOS_SUCCESS, payload: response.data })
         } catch (err) {
             dispatch({
@@ -25,8 +24,8 @@ export const getTodos = (data?: Data) => {
     }
 }
 
-export const createTodo = (data: Data) => {
-    return async (dispatch: Dispatch<TodoAction>) => {
+export const createTodo = (data: ITodoItem) => {
+    return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
             dispatch({ type: TodoActionTypes.CREATE_TODO, payload: data })
             const response = await todoService.createTodo(data)
@@ -37,11 +36,11 @@ export const createTodo = (data: Data) => {
     }
 }
 
-export const toggleTodo = (data: Data) => {
-    return async (dispatch: Dispatch<TodoAction>) => {
+export const toggleTodo = (data: ITodoItem) => {
+    return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
             dispatch({ type: TodoActionTypes.TOGGLE_TODO, payload: data.id })
-            const response = await todoService.updateTodo(data.id, {complete: data.complete})
+            const response = await todoService.updateTodo(data.id, { complete: data.complete })
             dispatch({ type: TodoActionTypes.GET_TODOS_SUCCESS, payload: response.data })
         } catch (err) {
             console.log(err)
@@ -49,8 +48,8 @@ export const toggleTodo = (data: Data) => {
     }
 }
 
-export const deleteTodo = (data: Data) => {
-    return async (dispatch: Dispatch<TodoAction>) => {
+export const deleteTodo = (data: ITodoItem) => {
+    return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
             dispatch({ type: TodoActionTypes.DELETE_TODO, payload: data.id })
             const response = await todoService.deleteTodo(data.id)
@@ -61,11 +60,11 @@ export const deleteTodo = (data: Data) => {
     }
 }
 
-export const editTodo = (data: Data) => {
-    return async (dispatch: Dispatch<TodoAction>) => {
+export const editTodo = (data: ITodoItem) => {
+    return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
             dispatch({ type: TodoActionTypes.EDIT_TODO, payload: data.id })
-            const response = await todoService.updateTodo(data.id, {text: data.text})
+            const response = await todoService.updateTodo(data.id, { text: data.text })
             dispatch({ type: TodoActionTypes.GET_TODOS_SUCCESS, payload: response.data })
         } catch (err) {
             console.log(err)
@@ -76,5 +75,5 @@ export const editTodo = (data: Data) => {
 
 
 export const reset = () => {
-    return{ type: TodoActionTypes.RESET_TODOS}
+    return { type: TodoActionTypes.RESET_TODOS }
 }

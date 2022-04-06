@@ -1,13 +1,15 @@
+import { ITodoItem } from './../../types/todo';
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { TodoAction, TodoActionTypes, TodoState } from "../../types/todo"
+import { todoService } from "../servies/todo"
 
 // Create new todo
 export const createTodo = createAsyncThunk(
   "todo/create",
-  async (data, thunkAPI) => {
+  async (data: ITodoItem, thunkAPI) => {
     try {
       return await todoService.createTodo(data)
-    } catch (error) {
+    } catch (error: any) {
       const message = (error.response
         && error.response.data
         && error.response.data.message)
@@ -21,11 +23,11 @@ export const createTodo = createAsyncThunk(
 // Get user todo
 export const getTodo = createAsyncThunk(
   "todo/getAll",
-  async (data, thunkAPI) => {
+  async (data: ITodoItem, thunkAPI) => {
     try {
       // console.log(data);
       return await todoService.getTodo({ complete: data?.complete })
-    } catch (error) {
+    } catch (error: any) {
       const message = (error.response
         && error.response.data
         && error.response.data.message)
@@ -39,10 +41,10 @@ export const getTodo = createAsyncThunk(
 // Delete todo
 export const deleteTodo = createAsyncThunk(
   "todo/delete",
-  async (id, thunkAPI) => {
+  async (id: any, thunkAPI) => {
     try {
       return await todoService.deleteTodo(id)
-    } catch (error) {
+    } catch (error: any) {
       const message = (error.response
         && error.response.data
         && error.response.data.message)
@@ -56,12 +58,12 @@ export const deleteTodo = createAsyncThunk(
 // Toggle todo
 export const toggleTodo = createAsyncThunk(
   "todo/complete",
-  async (data, thunkAPI) => {
+  async (data: {id: any, complete: boolean}, thunkAPI) => {
     try {
       return await todoService.updateTodo(data.id, {
         complete: data.complete
       })
-    } catch (error) {
+    } catch (error: any) {
       const message = (error.response
         && error.response.data
         && error.response.data.message)
@@ -75,10 +77,10 @@ export const toggleTodo = createAsyncThunk(
 // Edit todo
 export const editTodo = createAsyncThunk(
   "todo/update",
-  async (data, thunkAPI) => {
+  async (data: {id: any, text: string}, thunkAPI) => {
     try {
       return await todoService.updateTodo(data.id, { text: data.text })
-    } catch (error) {
+    } catch (error: any) {
       const message = (error.response
         && error.response.data
         && error.response.data.message)

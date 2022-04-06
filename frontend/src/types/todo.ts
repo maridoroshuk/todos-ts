@@ -6,6 +6,13 @@ export interface TodoState {
     message: string
 }
 
+export interface ITodoItem {
+    id: any
+    text: string
+    complete: boolean
+
+}
+
 export enum TodoActionTypes {
     GET_TODOS = "GET_TODOS",
     GET_TODOS_SUCCESS = "GET_TODOS_SUCCESS",
