@@ -1,95 +1,7 @@
-import { ITodoItem } from './../../types/todo';
-import { createAsyncThunk } from "@reduxjs/toolkit"
-import { TodoAction, TodoActionTypes, TodoState } from "../../types/todo"
-import { todoService } from "../servies/todo"
+import React from "react"
+import { TodoAction,TodoState } from "../../types/todo"
 
-// Create new todo
-export const createTodo = createAsyncThunk(
-  "todo/create",
-  async (data: ITodoItem, thunkAPI) => {
-    try {
-      return await todoService.createTodo(data)
-    } catch (error: any) {
-      const message = (error.response
-        && error.response.data
-        && error.response.data.message)
-        || error.message
-        || error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
-  }
-)
 
-// Get user todo
-export const getTodo = createAsyncThunk(
-  "todo/getAll",
-  async (data: ITodoItem, thunkAPI) => {
-    try {
-      // console.log(data);
-      return await todoService.getTodo({ complete: data?.complete })
-    } catch (error: any) {
-      const message = (error.response
-        && error.response.data
-        && error.response.data.message)
-        || error.message
-        || error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
-  }
-)
-
-// Delete todo
-export const deleteTodo = createAsyncThunk(
-  "todo/delete",
-  async (id: any, thunkAPI) => {
-    try {
-      return await todoService.deleteTodo(id)
-    } catch (error: any) {
-      const message = (error.response
-        && error.response.data
-        && error.response.data.message)
-        || error.message
-        || error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
-  }
-)
-
-// Toggle todo
-export const toggleTodo = createAsyncThunk(
-  "todo/complete",
-  async (data: {id: any, complete: boolean}, thunkAPI) => {
-    try {
-      return await todoService.updateTodo(data.id, {
-        complete: data.complete
-      })
-    } catch (error: any) {
-      const message = (error.response
-        && error.response.data
-        && error.response.data.message)
-        || error.message
-        || error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
-  }
-)
-
-// Edit todo
-export const editTodo = createAsyncThunk(
-  "todo/update",
-  async (data: {id: any, text: string}, thunkAPI) => {
-    try {
-      return await todoService.updateTodo(data.id, { text: data.text })
-    } catch (error: any) {
-      const message = (error.response
-        && error.response.data
-        && error.response.data.message)
-        || error.message
-        || error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
-  }
-)
 
 const initialState: TodoState = {
   todoList: [],
@@ -99,20 +11,26 @@ const initialState: TodoState = {
   message: ""
 }
 
-export const todoReducer = (state = initialState, action: TodoAction): TodoState => {
-  switch (action.type) {
-    case TodoActionTypes.GET_TODOS:
+export const todoReducer = (state = initialState, { type, payload }: TodoAction): TodoState => {
+  switch (type) {
+    case "GET_TODOS":
       return { ...state, isLoading: true }
-    case TodoActionTypes.GET_TODOS_SUCCESS:
-      return { ...state, isLoading: false, isSuccess: true, todoList: action.payload }
-    case TodoActionTypes.GET_TODOS_ERROR:
-      return { ...state, isLoading: false, isError: true, message: action.payload }
-    case TodoActionTypes.CREATE_TODO:
-      return { ...state, isLoading: false, isSuccess: true, todoList: state.todoList.concat(action.payload) }
-    case TodoActionTypes.TOGGLE_TODO:
+    case "GET_TODOS_SUCCESS":
+      return { ...state, isLoading: false, isSuccess: true, todoList: payload.todos }
+    case "GET_TODOS_ERROR":
+      return { ...state, isLoading: false, isError: true, message: payload.error }
+    case "CREATE_TODO":
+      return { ...state, isLoading: false }
+    case "CREATE_TODO_SUCCESS":
+      return { ...state, isLoading: false, isSuccess: true, todoList: state.todoList.concat(payload.todoItem) }
+    case "CREATE_TODO_ERROR":
+      return { ...state, isLoading: false, isError: true, message: payload.error }
+    case "TOGGLE_TODO":
+      return { ...state, isLoading: true }
+    case "TOGGLE_TODO_SUCCESS":
       return {
         ...state, isLoading: false, isSuccess: true, todoList: state.todoList.map((todo) => {
-          if (todo._id === action.payload.id) {
+          if (todo._id === payload.id) {
             return {
               ...todo,
               complete: !todo.complete
@@ -120,25 +38,35 @@ export const todoReducer = (state = initialState, action: TodoAction): TodoState
           }
         })
       }
-    case TodoActionTypes.DELETE_TODO:
+    case "TOGGLE_TODO_ERROR":
+      return { ...state, isLoading: false, isError: true, message: payload.error }
+    case "DELETE_TODO":
+      return { ...state, isLoading: true }
+    case "DELETE_TODO_SUCCESS":
       return {
-        ...state, isLoading: false, isSuccess: true, todoList: state.todoList.filter(
-          (todo) => todo._id !== action.payload.id
+        ...state, ...state, isLoading: false, isSuccess: true, todoList: state.todoList.filter(
+          (todo) => todo._id !== payload.id
         )
       }
-    case TodoActionTypes.EDIT_TODO:
+    case "DELETE_TODO_ERROR":
+      return { ...state, isLoading: false, isError: true, message: payload.error }
+    case "EDIT_TODO":
+      return { ...state, isLoading: true }
+    case "EDIT_TODO_SUCCESS":
       return {
         ...state, isLoading: false, isSuccess: true, todoList: state.todoList.map((todo) => {
-          if (todo._id === action.payload.id) {
+          if (todo._id === payload.id) {
             return {
               ...todo,
-              text: action.payload.text
+              text: payload.text
             }
           }
           return todo
         })
       }
-    case TodoActionTypes.RESET_TODOS:
+    case "EDIT_TODO_ERROR":
+      return { ...state, isLoading: false, isError: true, message: payload.error }
+    case "RESET_TODOS":
       return { ...state, todoList: state.todoList }
     default:
       return state

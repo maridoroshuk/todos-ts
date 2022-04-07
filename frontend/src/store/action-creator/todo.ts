@@ -1,71 +1,88 @@
-import { ITodoItem } from './../../types/todo';
 import { todoService } from './../servies/todo';
 import { Dispatch } from "react"
-import { TodoAction, TodoActionTypes } from "../../types/todo"
+import { TodoAction } from "../../types/todo"
 
 
+type GetTodos = {
+    complete: boolean
+}
+type CreateTodo = {
+    text: string
+    complete: boolean
+}
+type ToggleTodo = {
+    id: any
+    complete: boolean
+}
+type DeleteTodo = {
+    id: any
+}
+type EditTodo = {
+    id: any
+    text: string
+}
 
-export const getTodos = (data?: ITodoItem) => {
+export const getTodos = (payload?: GetTodos) => {
     return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
-            dispatch({ type: TodoActionTypes.GET_TODOS })
+            dispatch({ type: "GET_TODOS", payload: {} })
             let response
-            if (data) {
-                response = await todoService.getTodo((<any>data).complete)
+            if (payload) {
+                response = await todoService.getTodo((<any>payload).complete)
             }
             response = await todoService.getTodo()
-            dispatch({ type: TodoActionTypes.GET_TODOS_SUCCESS, payload: response.data })
+            dispatch({ type: "GET_TODOS_SUCCESS", payload: response.payload })
         } catch (err) {
             dispatch({
-                type: TodoActionTypes.GET_TODOS_ERROR,
-                payload: "Cannot fetch the todos. Please try again later"
+                type: "GET_TODOS_ERROR",
+                payload: { error: "Cannot fetch the todos. Please try again later" }
             })
         }
     }
 }
 
-export const createTodo = (data: ITodoItem) => {
+export const createTodo = (payload: CreateTodo) => {
     return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
-            dispatch({ type: TodoActionTypes.CREATE_TODO, payload: data })
-            const response = await todoService.createTodo(data)
-            dispatch({ type: TodoActionTypes.GET_TODOS_SUCCESS, payload: response.data })
+            dispatch({ type: "CREATE_TODO", payload: payload })
+            const response = await todoService.createTodo(payload)
+            dispatch({ type: "GET_TODOS_SUCCESS", payload: response.data })
         } catch (err) {
             console.log(err)
         }
     }
 }
 
-export const toggleTodo = (data: ITodoItem) => {
+export const toggleTodo = (payload: ToggleTodo) => {
     return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
-            dispatch({ type: TodoActionTypes.TOGGLE_TODO, payload: data.id })
-            const response = await todoService.updateTodo(data.id, { complete: data.complete })
-            dispatch({ type: TodoActionTypes.GET_TODOS_SUCCESS, payload: response.data })
+            dispatch({ type: "TOGGLE_TODO", payload: payload.id })
+            const response = await todoService.updateTodo(payload.id, { complete: payload.complete })
+            dispatch({ type: "GET_TODOS_SUCCESS", payload: response.data })
         } catch (err) {
             console.log(err)
         }
     }
 }
 
-export const deleteTodo = (data: ITodoItem) => {
+export const deleteTodo = (payload: DeleteTodo) => {
     return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
-            dispatch({ type: TodoActionTypes.DELETE_TODO, payload: data.id })
-            const response = await todoService.deleteTodo(data.id)
-            dispatch({ type: TodoActionTypes.GET_TODOS_SUCCESS, payload: response.data })
+            dispatch({ type: "DELETE_TODO", payload: payload.id })
+            const response = await todoService.deleteTodo(payload.id)
+            dispatch({ type: "GET_TODOS_SUCCESS", payload: response.data })
         } catch (err) {
             console.log(err)
         }
     }
 }
 
-export const editTodo = (data: ITodoItem) => {
+export const editTodo = (payload: EditTodo) => {
     return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
-            dispatch({ type: TodoActionTypes.EDIT_TODO, payload: data.id })
-            const response = await todoService.updateTodo(data.id, { text: data.text })
-            dispatch({ type: TodoActionTypes.GET_TODOS_SUCCESS, payload: response.data })
+            dispatch({ type: "EDIT_TODO", payload: payload.id })
+            const response = await todoService.updateTodo(payload.id, { text: payload.text })
+            dispatch({ type: "GET_TODOS_SUCCESS", payload: response.data })
         } catch (err) {
             console.log(err)
         }
@@ -75,5 +92,5 @@ export const editTodo = (data: ITodoItem) => {
 
 
 export const reset = () => {
-    return { type: TodoActionTypes.RESET_TODOS }
+    return { type: "RESET_TODOS" }
 }

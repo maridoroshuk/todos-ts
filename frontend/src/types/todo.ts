@@ -6,76 +6,85 @@ export interface TodoState {
     message: string
 }
 
+
 export interface ITodoItem {
-    id: any
+    id?: any
     text: string
     complete: boolean
 
 }
 
-export enum TodoActionTypes {
-    GET_TODOS = "GET_TODOS",
-    GET_TODOS_SUCCESS = "GET_TODOS_SUCCESS",
-    GET_TODOS_ERROR = "GET_TODOS_ERROR",
-    CREATE_TODO = "CREATE_TODO",
-    TOGGLE_TODO = "TOGGLE_TODO",
-    DELETE_TODO = "DELETE_TODO",
-    EDIT_TODO = "EDIT_TODO",
-    RESET_TODOS = "RESET_TODOS"
+//Generic for actions
+export type Action<T extends string, P extends {}> = {
+    type: T,
+    payload: P
 }
 
-interface GetTodosAction {
-    type: TodoActionTypes.GET_TODOS
-}
-interface GetTodosSuccessAction {
-    type: TodoActionTypes.GET_TODOS_SUCCESS
-    payload: any[]
-}
-interface GetTodosErrorAction {
-    type: TodoActionTypes.GET_TODOS_ERROR
-    payload: string
-}
-interface CreateTodoAction {
-    type: TodoActionTypes.CREATE_TODO
-    payload: {
+
+//Get todo type
+type GetTodosAction = Action<"GET_TODOS", { complete?: boolean }>
+type GetTodosSuccessAction = Action<"GET_TODOS_SUCCESS", { todos: any[] }>
+type GetTodosErrorAction = Action<"GET_TODOS_ERROR", { error: string }>
+
+//Create todo type
+type CreateTodoAction = Action<"CREATE_TODO", {}>
+type CreateTodoSuccessAction = Action<"CREATE_TODO_SUCCESS", {
+    todoItem: {
         text: string
         complete: boolean
     }
-}
-interface ToggleTodoAction {
-    type: TodoActionTypes.TOGGLE_TODO
-    payload: {
-        id: any
-        text: string
-        complete: boolean
-    }
-}
-interface DeleteTodoAction {
-    type: TodoActionTypes.DELETE_TODO
-    payload: {
-        id: any
-        text: string
-        complete: boolean
-    }
-}
-interface EditTodoAction {
-    type: TodoActionTypes.EDIT_TODO
-    payload: {
-        id: any
-        text: string
-        complete: boolean
-    }
-}
-interface ResetTodos {
-    type: TodoActionTypes.RESET_TODOS
-    payload: string
-}
+}>
+type CreateTodoErrorAction = Action<"CREATE_TODO_ERROR", { error: string }>
+
+//Toggle todo type
+type ToggleTodoAction = Action<"TOGGLE_TODO", {}>
+type ToggleTodoSuccessAction = Action<"TOGGLE_TODO_SUCCESS", {
+    id: any
+    text: string
+    complete: boolean
+}>
+type ToggleTodoErrorAction = Action<"TOGGLE_TODO_ERROR", { error: string }>
+
+
+//Delete todo type
+type DeleteTodoAction = Action<"DELETE_TODO", {}>
+type DeleteTodoSuccessAction = Action<"DELETE_TODO_SUCCESS", {
+    id: any
+    text: string
+    complete: boolean
+}>
+type DeleteTodoErrorAction = Action<"DELETE_TODO_ERROR", { error: string }>
+
+//Edit todo type
+type EditTodoAction = Action<"EDIT_TODO", {}>
+type EditTodoSuccessAction = Action<"EDIT_TODO_SUCCESS", {
+    id: any
+    text: string
+    complete: boolean
+}>
+type EditTodoErrorAction = Action<"EDIT_TODO_ERROR", { error: string }>
+
+
+//Reset todo type
+type ResetTodosAction = Action<"RESET_TODOS", {
+    id: any
+    text: string
+    complete: boolean
+}>
 
 export type TodoAction = GetTodosAction
     | GetTodosSuccessAction
     | GetTodosErrorAction
     | CreateTodoAction
+    | CreateTodoSuccessAction
+    | CreateTodoErrorAction
     | ToggleTodoAction
+    | ToggleTodoSuccessAction
+    | ToggleTodoErrorAction
     | DeleteTodoAction
+    | DeleteTodoSuccessAction
+    | DeleteTodoErrorAction
     | EditTodoAction
-    | ResetTodos
+    | EditTodoSuccessAction
+    | EditTodoErrorAction
+    | ResetTodosAction

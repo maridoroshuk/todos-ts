@@ -1,14 +1,14 @@
 import React, { FC, FormEvent, useEffect, useState } from "react"
 import { useActions } from "../hooks/useActions"
 
-interface TextProps {
+type TextProps = {
   inputVisible: boolean
-  todo: string[]
+  todo: {}
   setInputVisible: (p: boolean) => void
-  onCompleteClick: () => void
+  onCompleteClick: any
 }
 
-export const TodoText: FC = (props: TextProps) => {
+export const TodoText: FC<TextProps> = (props: TextProps) => {
   const { inputVisible, todo, setInputVisible, onCompleteClick } = props
   const [textInput, setTextInput] = useState<string>(todo.text)
   
@@ -31,7 +31,7 @@ export const TodoText: FC = (props: TextProps) => {
     }
   })
 
-  const editTextHandle = (event: FormEvent<HTMLInputElement>) => {
+  const editTextHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTextInput(event.target.value)
   }
 

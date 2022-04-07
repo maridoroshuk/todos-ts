@@ -1,6 +1,4 @@
 import React, { FC, useState } from "react"
-import { useDispatch } from "react-redux"
-import { deleteTodo, toggleTodo } from "../features/todos/todoSlice"
 import { useActions } from "../hooks/useActions"
 import { TodoText } from "./TodoText"
 
