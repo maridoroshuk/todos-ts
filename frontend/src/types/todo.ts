@@ -23,7 +23,7 @@ export type Action<T extends string, P extends {}> = {
 
 //Get todo type
 type GetTodosAction = Action<"GET_TODOS", { complete?: boolean }>
-type GetTodosSuccessAction = Action<"GET_TODOS_SUCCESS", { todos: any[] }>
+type GetTodosSuccessAction = Action<"GET_TODOS_SUCCESS", { todos: any }>
 type GetTodosErrorAction = Action<"GET_TODOS_ERROR", { error: string }>
 
 //Create todo type

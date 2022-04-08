@@ -31,7 +31,7 @@ export const getTodos = (payload?: GetTodos) => {
                 response = await todoService.getTodo((<any>payload).complete)
             }
             response = await todoService.getTodo()
-            dispatch({ type: "GET_TODOS_SUCCESS", payload: response.payload })
+            dispatch({ type: "GET_TODOS_SUCCESS", payload: response.data })
         } catch (err) {
             dispatch({
                 type: "GET_TODOS_ERROR",

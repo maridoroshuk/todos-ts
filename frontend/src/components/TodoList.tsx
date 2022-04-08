@@ -24,8 +24,8 @@ export const TodoList: FC = () => {
 		}
 	}, [isError, message])
 
-	const statusHandler = (e) => {
-		const status = e.target.innerText
+	const statusHandler = (event: React.ChangeEvent<HTMLParagraphElement>) => {
+		const status = event.target.innerText 
 		if (status === "completed") {
 			getTodos({ complete: true })
 		} else if (status === "uncompleted") {
@@ -48,13 +48,13 @@ export const TodoList: FC = () => {
 								<TodoItem key={todo._id} todo={todo} />
 							))}
 							<div className="filter-todo">
-								<p onClick={statusHandler} id="filter-todo-all">
+								<p onClick={() => statusHandler} id="filter-todo-all">
 									all
 								</p>
-								<p onClick={statusHandler} id="filter-todo-completed">
+								<p onClick={() => statusHandler} id="filter-todo-completed">
 									completed
 								</p>
-								<p onClick={statusHandler} id="filter-todo-uncompleted">
+								<p onClick={() => statusHandler} id="filter-todo-uncompleted">
 									uncompleted
 								</p>
 							</div>

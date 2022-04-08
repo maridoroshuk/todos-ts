@@ -1,1 +1,1 @@
-simple todo app using MERN stack
+fullstack todo app with TypeScript and Redux

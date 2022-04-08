@@ -3,7 +3,11 @@ import { useActions } from "../hooks/useActions"
 
 type TextProps = {
   inputVisible: boolean
-  todo: {}
+  todo: {
+    _id: any,
+    text: string,
+    complete: boolean
+  }
   setInputVisible: (p: boolean) => void
   onCompleteClick: any
 }
@@ -11,32 +15,15 @@ type TextProps = {
 export const TodoText: FC<TextProps> = (props: TextProps) => {
   const { inputVisible, todo, setInputVisible, onCompleteClick } = props
   const [textInput, setTextInput] = useState<string>(todo.text)
-  
+
   const { editTodo } = useActions()
 
-  function onClickOutSide(e) {
-    if (textInput && !textInput.contains(e.target)) {
-      setInputVisible(false)
-    }
-  }
-
-  useEffect(() => {
-    // Handle outside clicks
-    if (inputVisible) {
-      document.addEventListener("mousedown", onClickOutSide)
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", onClickOutSide)
-    }
-  })
-
-  const editTextHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const editTextHandle = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setTextInput(event.target.value)
   }
 
-  const submitEditTextHandler = (event: FormEvent<HTMLInputElement>) => {
-    e.preventDefault()
+  const submitEditTextHandler = (event: React.FormEvent<HTMLFormElement>): void => {
+    event.preventDefault()
     editTodo({ id: todo._id, text: textInput })
     setInputVisible(false)
   }
@@ -51,7 +38,7 @@ export const TodoText: FC<TextProps> = (props: TextProps) => {
           />
         </form>
       ) : (
-        <span role="button" tabIndex="0" onClick={onCompleteClick} className="todo-item">
+        <span role="button" onClick={onCompleteClick} className="todo-item">
           {todo.text}
         </span>
       )}
