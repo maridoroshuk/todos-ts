@@ -28,10 +28,11 @@ export const getTodos = (payload?: GetTodos) => {
             dispatch({ type: "GET_TODOS", payload: {} })
             let response
             if (payload) {
+                console.log(payload)
                 response = await todoService.getTodo((<any>payload).complete)
             }
             response = await todoService.getTodo()
-            dispatch({ type: "GET_TODOS_SUCCESS", payload: response.data })
+            dispatch({ type: "GET_TODOS_SUCCESS", payload: response })
         } catch (err) {
             dispatch({
                 type: "GET_TODOS_ERROR",
@@ -46,7 +47,7 @@ export const createTodo = (payload: CreateTodo) => {
         try {
             dispatch({ type: "CREATE_TODO", payload: payload })
             const response = await todoService.createTodo(payload)
-            dispatch({ type: "GET_TODOS_SUCCESS", payload: response.data })
+            dispatch({ type: "GET_TODOS_SUCCESS", payload: response })
         } catch (err) {
             console.log(err)
         }
@@ -56,9 +57,10 @@ export const createTodo = (payload: CreateTodo) => {
 export const toggleTodo = (payload: ToggleTodo) => {
     return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
+            console.log(payload)
             dispatch({ type: "TOGGLE_TODO", payload: payload.id })
             const response = await todoService.updateTodo(payload.id, { complete: payload.complete })
-            dispatch({ type: "GET_TODOS_SUCCESS", payload: response.data })
+            dispatch({ type: "GET_TODOS_SUCCESS", payload: response })
         } catch (err) {
             console.log(err)
         }
@@ -70,7 +72,7 @@ export const deleteTodo = (payload: DeleteTodo) => {
         try {
             dispatch({ type: "DELETE_TODO", payload: payload.id })
             const response = await todoService.deleteTodo(payload.id)
-            dispatch({ type: "GET_TODOS_SUCCESS", payload: response.data })
+            dispatch({ type: "GET_TODOS_SUCCESS", payload: response })
         } catch (err) {
             console.log(err)
         }
@@ -82,7 +84,7 @@ export const editTodo = (payload: EditTodo) => {
         try {
             dispatch({ type: "EDIT_TODO", payload: payload.id })
             const response = await todoService.updateTodo(payload.id, { text: payload.text })
-            dispatch({ type: "GET_TODOS_SUCCESS", payload: response.data })
+            dispatch({ type: "GET_TODOS_SUCCESS", payload: response })
         } catch (err) {
             console.log(err)
         }

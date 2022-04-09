@@ -19,7 +19,7 @@ const getTodo = async (data?: {complete: boolean}) => {
   } else {
      getTodosUrl = `${API_URL}?complete=${data}`
   }
-  const response = await axios.get(getTodosUrl)
+  const response = await axios.get<ITodoItem[]>(getTodosUrl)
 
   return response.data
 }

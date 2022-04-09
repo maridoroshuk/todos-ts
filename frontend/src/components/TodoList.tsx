@@ -3,7 +3,9 @@ import { Spinner } from "./Spinner"
 import { TodoItem } from "./TodoItem"
 import { Form } from "./Form"
 import { useTypedSelector } from "../hooks/useTypedSelector"
-import { useActions } from "../hooks/useActions"
+import { ITodoItem } from "../types/todo"
+import { useDispatch } from "react-redux"
+import { getTodos, reset } from "../store/action-creator/todo"
 
 export const TodoList: FC = () => {
 	const {
@@ -12,26 +14,29 @@ export const TodoList: FC = () => {
 		(state) => state.todo
 	)
 
-	const { getTodos, reset } = useActions()
+	console.log(todoList)
+
+	const dispatch = useDispatch()
 
 	useEffect(() => {
-		getTodos()
+		dispatch(getTodos())
 		if (isError) {
 			console.log(message)
 		}
 		return () => {
-			reset()
+			dispatch(reset())
+			
 		}
 	}, [isError, message])
 
 	const statusHandler = (event: React.ChangeEvent<HTMLParagraphElement>) => {
 		const status = event.target.innerText 
 		if (status === "completed") {
-			getTodos({ complete: true })
+			dispatch({ type: "GET_TODOS", payload: { complete: true }})
 		} else if (status === "uncompleted") {
-			getTodos({ complete: false })
+			dispatch({ type: "GET_TODOS", payload: { complete: false }})
 		} else if (status === "all") {
-			getTodos()
+			dispatch({ type: "GET_TODOS"})
 		}
 	}
 
@@ -44,8 +49,8 @@ export const TodoList: FC = () => {
 				<section className="section">
 					{todoList.length > 0 ? (
 						<div className="todos">
-							{todoList.map((todo) => (
-								<TodoItem key={todo._id} todo={todo} />
+							{todoList.map((todo: ITodoItem) => (
+								<TodoItem key={todo._id} todo={todo}/>
 							))}
 							<div className="filter-todo">
 								<p onClick={() => statusHandler} id="filter-todo-all">

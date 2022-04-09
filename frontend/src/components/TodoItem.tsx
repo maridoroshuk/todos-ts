@@ -1,29 +1,26 @@
 import React, { FC, useState } from "react"
-import { useActions } from "../hooks/useActions"
+import { useDispatch } from "react-redux"
+import { deleteTodo, toggleTodo } from "../store/action-creator/todo"
+import { ITodoItem } from "../types/todo"
 import { TodoText } from "./TodoText"
 
 type Props = {
-	todo: {
-		_id: any,
-		text: string,
-		complete: boolean
-	}
+	todo: ITodoItem
 }
 
 
-export const TodoItem: FC<Props> = ({ todo }) => {
+export const TodoItem: FC<Props> = ({ todo }: Props) => {
 	const [inputVisible, setInputVisible] = useState<boolean>(false)
 
-	const { toggleTodo, deleteTodo} = useActions()
+	const dispatch = useDispatch()
 
 	const completeHandler = (): void => {
-		toggleTodo({ id: todo._id, complete: !todo.complete })
+		dispatch(toggleTodo({ id: todo._id, complete: !todo.complete }))
 	}
 
 	const deleteHandler = (): void => {
-		deleteTodo(todo._id)
+		dispatch(deleteTodo(todo._id))
 	}
-
 	return (
 		<div id="todos" className="todos">
 			<li className={todo.complete ? "completed" : "uncompleted"}>
@@ -35,9 +32,9 @@ export const TodoItem: FC<Props> = ({ todo }) => {
 					{todo.complete ? <i className="fas fa-check" /> : null}
 				</button>
 				<TodoText
+					todo={todo}
 					onCompleteClick={completeHandler}
 					inputVisible={inputVisible}
-					todo={todo}
 					setInputVisible={setInputVisible}
 				/>
 				<button type="button" onClick={() => setInputVisible(true)} className="edit-btn">

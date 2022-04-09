@@ -1,5 +1,5 @@
 import React from "react"
-import { TodoAction,TodoState } from "../../types/todo"
+import { ITodoItem, TodoAction,TodoState } from "../../types/todo"
 
 
 
@@ -16,7 +16,7 @@ export const todoReducer = (state = initialState, { type, payload }: TodoAction)
     case "GET_TODOS":
       return { ...state, isLoading: true }
     case "GET_TODOS_SUCCESS":
-      return { ...state, isLoading: false, isSuccess: true, todoList: payload.todos }
+      return { ...state, isLoading: false, isSuccess: true, todoList: payload }
     case "GET_TODOS_ERROR":
       return { ...state, isLoading: false, isError: true, message: payload.error }
     case "CREATE_TODO":
@@ -29,7 +29,7 @@ export const todoReducer = (state = initialState, { type, payload }: TodoAction)
       return { ...state, isLoading: true }
     case "TOGGLE_TODO_SUCCESS":
       return {
-        ...state, isLoading: false, isSuccess: true, todoList: state.todoList.map((todo) => {
+        ...state, isLoading: false, isSuccess: true, todoList: state.todoList.map((todo: ITodoItem) => {
           if (todo._id === payload.id) {
             return {
               ...todo,
@@ -45,7 +45,7 @@ export const todoReducer = (state = initialState, { type, payload }: TodoAction)
     case "DELETE_TODO_SUCCESS":
       return {
         ...state, ...state, isLoading: false, isSuccess: true, todoList: state.todoList.filter(
-          (todo) => todo._id !== payload.id
+          (todo: ITodoItem) => todo._id !== payload.id
         )
       }
     case "DELETE_TODO_ERROR":
@@ -54,7 +54,7 @@ export const todoReducer = (state = initialState, { type, payload }: TodoAction)
       return { ...state, isLoading: true }
     case "EDIT_TODO_SUCCESS":
       return {
-        ...state, isLoading: false, isSuccess: true, todoList: state.todoList.map((todo) => {
+        ...state, isLoading: false, isSuccess: true, todoList: state.todoList.map((todo: ITodoItem) => {
           if (todo._id === payload.id) {
             return {
               ...todo,

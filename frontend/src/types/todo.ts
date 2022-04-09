@@ -1,5 +1,5 @@
 export interface TodoState {
-    todoList: any[]
+    todoList: any
     isError: boolean
     isSuccess: boolean
     isLoading: boolean
@@ -8,7 +8,7 @@ export interface TodoState {
 
 
 export interface ITodoItem {
-    id?: any
+    _id?: any
     text: string
     complete: boolean
 
@@ -23,7 +23,7 @@ export type Action<T extends string, P extends {}> = {
 
 //Get todo type
 type GetTodosAction = Action<"GET_TODOS", { complete?: boolean }>
-type GetTodosSuccessAction = Action<"GET_TODOS_SUCCESS", { todos: any }>
+type GetTodosSuccessAction = Action<"GET_TODOS_SUCCESS", ITodoItem[]>
 type GetTodosErrorAction = Action<"GET_TODOS_ERROR", { error: string }>
 
 //Create todo type
