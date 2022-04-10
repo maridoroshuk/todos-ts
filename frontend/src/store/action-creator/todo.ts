@@ -22,16 +22,16 @@ type EditTodo = {
     text: string
 }
 
-export const getTodos = (payload?: GetTodos) => {
+export const getTodo = (data?: GetTodos) => {
     return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
             dispatch({ type: "GET_TODOS", payload: {} })
             let response
-            if (payload) {
-                console.log(payload)
-                response = await todoService.getTodo((<any>payload).complete)
+            if (data) {
+                response = await todoService.getTodo((<any>data).complete)
             }
             response = await todoService.getTodo()
+            console.log(response)
             dispatch({ type: "GET_TODOS_SUCCESS", payload: response })
         } catch (err) {
             dispatch({
@@ -60,10 +60,9 @@ export const createTodo = (payload: CreateTodo) => {
 export const toggleTodo = (payload: ToggleTodo) => {
     return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
-            console.log(payload)
+            console.log(payload.id)
             dispatch({ type: "TOGGLE_TODO", payload: payload.id })
             const response = await todoService.updateTodo(payload.id, { complete: payload.complete })
-            console.log(response)
             dispatch({ type: "TOGGLE_TODO_SUCCESS", payload: response })
         } catch (err) {
             dispatch({

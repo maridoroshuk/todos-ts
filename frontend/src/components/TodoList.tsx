@@ -4,8 +4,7 @@ import { TodoItem } from "./TodoItem"
 import { Form } from "./Form"
 import { useTypedSelector } from "../hooks/useTypedSelector"
 import { ITodoItem } from "../types/todo"
-import { useDispatch } from "react-redux"
-import { getTodos, reset } from "../store/action-creator/todo"
+import { useActions } from "../hooks/useActions"
 
 export const TodoList: FC = () => {
 	const {
@@ -14,29 +13,29 @@ export const TodoList: FC = () => {
 		(state) => state.todo
 	)
 
-	console.log(todoList)
+	console.log(isLoading)
 
-	const dispatch = useDispatch()
+	const { getTodo, reset } = useActions()
 
 	useEffect(() => {
-		dispatch(getTodos())
+		getTodo()
+		console.log("render")
 		if (isError) {
 			console.log(message)
 		}
 		return () => {
-			dispatch(reset())
-			
+			reset()
 		}
-	}, [isError, message, dispatch])
+	}, [isError, message])
 
 	const statusHandler = (event: React.ChangeEvent<HTMLParagraphElement>) => {
-		const status = event.target.innerText 
+		const status = event.target.innerText
 		if (status === "completed") {
-			dispatch({ type: "GET_TODOS", payload: { complete: true }})
+			getTodo({ complete: true })
 		} else if (status === "uncompleted") {
-			dispatch({ type: "GET_TODOS", payload: { complete: false }})
+			getTodo({ complete: false })
 		} else if (status === "all") {
-			dispatch({ type: "GET_TODOS"})
+			getTodo()
 		}
 	}
 
@@ -50,7 +49,7 @@ export const TodoList: FC = () => {
 					{todoList.length > 0 ? (
 						<div className="todos">
 							{todoList.map((todo: ITodoItem) => (
-								<TodoItem key={todo._id} todo={todo}/>
+								<TodoItem key={todo._id} todo={todo} />
 							))}
 							<div className="filter-todo">
 								<p onClick={() => statusHandler} id="filter-todo-all">

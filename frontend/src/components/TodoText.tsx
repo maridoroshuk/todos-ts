@@ -1,6 +1,5 @@
 import React, { FC, useState } from "react"
-import { useDispatch } from "react-redux"
-import { editTodo } from "../store/action-creator/todo"
+import { useActions } from "../hooks/useActions"
 import { ITodoItem } from "../types/todo"
 
 type TextProps = {
@@ -14,7 +13,7 @@ export const TodoText: FC<TextProps> = (props: TextProps) => {
   const { inputVisible, todo, setInputVisible, onCompleteClick } = props
   const [textInput, setTextInput] = useState<string>(todo.text)
 
-  const dispatch = useDispatch()
+  const { editTodo } = useActions()
 
   const editTextHandle = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setTextInput(event.target.value)
@@ -22,7 +21,7 @@ export const TodoText: FC<TextProps> = (props: TextProps) => {
 
   const submitEditTextHandler = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
-    dispatch(editTodo({ id: todo._id, text: textInput }))
+    editTodo({ id: todo._id, text: textInput })
     setInputVisible(false)
   }
   return (

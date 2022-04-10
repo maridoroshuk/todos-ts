@@ -1,5 +1,5 @@
 import React from "react"
-import { ITodoItem, TodoAction,TodoState } from "../../types/todo"
+import { ITodoItem, TodoAction, TodoState } from "../../types/todo"
 
 
 
@@ -22,7 +22,7 @@ export const todoReducer = (state = initialState, { type, payload }: TodoAction)
     case "CREATE_TODO":
       return { ...state, isLoading: false }
     case "CREATE_TODO_SUCCESS":
-      return { ...state, isLoading: false, isSuccess: true, todoList: state.todoList.concat(payload.todoItem) }
+      return { ...state, isLoading: false, isSuccess: true, todoList: state.todoList.push(payload.todoItem)}
     case "CREATE_TODO_ERROR":
       return { ...state, isLoading: false, isError: true, message: payload.error }
     case "TOGGLE_TODO":
@@ -36,6 +36,7 @@ export const todoReducer = (state = initialState, { type, payload }: TodoAction)
               complete: !todo.complete
             }
           }
+          return todo
         })
       }
     case "TOGGLE_TODO_ERROR":
@@ -44,7 +45,7 @@ export const todoReducer = (state = initialState, { type, payload }: TodoAction)
       return { ...state, isLoading: true }
     case "DELETE_TODO_SUCCESS":
       return {
-        ...state, ...state, isLoading: false, isSuccess: true, todoList: state.todoList.filter(
+        ...state, isLoading: false, isSuccess: true, todoList: state.todoList.filter(
           (todo: ITodoItem) => todo._id !== payload.id
         )
       }

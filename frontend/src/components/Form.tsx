@@ -1,15 +1,14 @@
-import React, { ChangeEvent, FC, FormEvent, FormEventHandler, useState } from "react"
-import { useDispatch } from "react-redux"
-import { createTodo } from "../store/action-creator/todo"
+import React, { ChangeEvent, FC, FormEvent, useState } from "react"
+import { useActions } from "../hooks/useActions"
 
 export const Form: FC = () => {
 	const [text, setText] = useState<string>("")
 
-	const dispatch = useDispatch()
+	const { createTodo } = useActions()
 
 	const onSubmit = (event: FormEvent<HTMLFormElement>): void => {
 		event.preventDefault()
-		dispatch(createTodo({ text, complete: false }))
+		createTodo({ text, complete: false })
 		setText("")
 	}
 
@@ -18,7 +17,7 @@ export const Form: FC = () => {
 	}
 
 	return (
-		<form id="form"  onSubmit={onSubmit}>
+		<form id="form" onSubmit={onSubmit}>
 			<input
 				onChange={handleInputChange}
 				value={text}
