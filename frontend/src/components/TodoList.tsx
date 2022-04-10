@@ -27,7 +27,7 @@ export const TodoList: FC = () => {
 			dispatch(reset())
 			
 		}
-	}, [isError, message])
+	}, [isError, message, dispatch])
 
 	const statusHandler = (event: React.ChangeEvent<HTMLParagraphElement>) => {
 		const status = event.target.innerText 

@@ -47,9 +47,12 @@ export const createTodo = (payload: CreateTodo) => {
         try {
             dispatch({ type: "CREATE_TODO", payload: payload })
             const response = await todoService.createTodo(payload)
-            dispatch({ type: "GET_TODOS_SUCCESS", payload: response })
+            dispatch({ type: "CREATE_TODO_SUCCESS", payload: response })
         } catch (err) {
-            console.log(err)
+            dispatch({
+                type: "CREATE_TODO_ERROR",
+                payload: { error: "Cannot create todo. Please try again later" }
+            })
         }
     }
 }
@@ -60,9 +63,13 @@ export const toggleTodo = (payload: ToggleTodo) => {
             console.log(payload)
             dispatch({ type: "TOGGLE_TODO", payload: payload.id })
             const response = await todoService.updateTodo(payload.id, { complete: payload.complete })
-            dispatch({ type: "GET_TODOS_SUCCESS", payload: response })
+            console.log(response)
+            dispatch({ type: "TOGGLE_TODO_SUCCESS", payload: response })
         } catch (err) {
-            console.log(err)
+            dispatch({
+                type: "TOGGLE_TODO_ERROR",
+                payload: { error: `${err}` }
+            })
         }
     }
 }
@@ -72,9 +79,12 @@ export const deleteTodo = (payload: DeleteTodo) => {
         try {
             dispatch({ type: "DELETE_TODO", payload: payload.id })
             const response = await todoService.deleteTodo(payload.id)
-            dispatch({ type: "GET_TODOS_SUCCESS", payload: response })
+            dispatch({ type: "DELETE_TODO_SUCCESS", payload: response })
         } catch (err) {
-            console.log(err)
+            dispatch({
+                type: "DELETE_TODO_ERROR",
+                payload: { error: `${err}` }
+            })
         }
     }
 }
@@ -84,9 +94,12 @@ export const editTodo = (payload: EditTodo) => {
         try {
             dispatch({ type: "EDIT_TODO", payload: payload.id })
             const response = await todoService.updateTodo(payload.id, { text: payload.text })
-            dispatch({ type: "GET_TODOS_SUCCESS", payload: response })
+            dispatch({ type: "EDIT_TODO_SUCCESS", payload: response })
         } catch (err) {
-            console.log(err)
+            dispatch({
+                type: "EDIT_TODO_ERROR",
+                payload: { error: `${err}` }
+            })
         }
     }
 }
