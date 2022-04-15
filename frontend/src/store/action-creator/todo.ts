@@ -60,10 +60,10 @@ export const createTodo = (payload: CreateTodo) => {
 export const toggleTodo = (payload: ToggleTodo) => {
     return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
-            console.log(payload.id)
-            dispatch({ type: "TOGGLE_TODO", payload: payload.id })
+            console.log(payload)
             const response = await todoService.updateTodo(payload.id, { complete: payload.complete })
             dispatch({ type: "TOGGLE_TODO_SUCCESS", payload: response })
+            console.log(response)
         } catch (err) {
             dispatch({
                 type: "TOGGLE_TODO_ERROR",

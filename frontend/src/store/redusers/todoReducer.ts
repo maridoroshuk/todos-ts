@@ -22,7 +22,7 @@ export const todoReducer = (state = initialState, { type, payload }: TodoAction)
     case "CREATE_TODO":
       return { ...state, isLoading: false }
     case "CREATE_TODO_SUCCESS":
-      return { ...state, isLoading: false, isSuccess: true, todoList: state.todoList.push(payload.todoItem)}
+      return { ...state, isLoading: false, isSuccess: true, todoList: [...state.todoList, payload]}
     case "CREATE_TODO_ERROR":
       return { ...state, isLoading: false, isError: true, message: payload.error }
     case "TOGGLE_TODO":
@@ -31,6 +31,7 @@ export const todoReducer = (state = initialState, { type, payload }: TodoAction)
       return {
         ...state, isLoading: false, isSuccess: true, todoList: state.todoList.map((todo: ITodoItem) => {
           if (todo._id === payload.id) {
+            console.log(state.todoList)
             return {
               ...todo,
               complete: !todo.complete

@@ -5,6 +5,8 @@ import { Form } from "./Form"
 import { useTypedSelector } from "../hooks/useTypedSelector"
 import { ITodoItem } from "../types/todo"
 import { useActions } from "../hooks/useActions"
+import { useDispatch } from "react-redux"
+import { getTodo, reset } from "../store/action-creator/todo"
 
 export const TodoList: FC = () => {
 	const {
@@ -13,20 +15,19 @@ export const TodoList: FC = () => {
 		(state) => state.todo
 	)
 
-	console.log(isLoading)
-
-	const { getTodo, reset } = useActions()
+	// const { getTodo, reset } = useActions()
+	const dispatch = useDispatch()
 
 	useEffect(() => {
-		getTodo()
-		console.log("render")
+		dispatch(getTodo())
 		if (isError) {
 			console.log(message)
 		}
 		return () => {
-			reset()
+			dispatch(reset())
 		}
-	}, [isError, message])
+	}, [isError, message, dispatch])
+
 
 	const statusHandler = (event: React.ChangeEvent<HTMLParagraphElement>) => {
 		const status = event.target.innerText
