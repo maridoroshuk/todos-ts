@@ -12,17 +12,17 @@ const createTodo = async (data: ITodoItem) => {
 }
 
 // Get user todo
-const getTodo = async (data?: {complete: boolean}) => {
+const getTodo = async (data?: { complete: boolean }) => {
   let getTodosUrl
-  if (data === undefined) {
-    getTodosUrl = API_URL
+  if (data) {
+    getTodosUrl = `${API_URL}?complete=${data.complete}`
   } else {
-     getTodosUrl = `${API_URL}?complete=${data}`
+    getTodosUrl = API_URL
+
   }
 
 
   const response = await axios.get<ITodoItem[]>(getTodosUrl)
-  console.log(response)
   return response.data
 }
 
@@ -34,7 +34,7 @@ const deleteTodo = async (todoId: ITodoItem) => {
 }
 
 // Update user todo
-const updateTodo = async (todoId: any, data: {complete?: boolean, text?: string}) => {
+const updateTodo = async (todoId: any, data: { complete?: boolean, text?: string }) => {
   const response = await axios.put(API_URL + todoId, data)
   return response.data
 }

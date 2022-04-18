@@ -28,10 +28,10 @@ export const getTodo = (data?: GetTodos) => {
             dispatch({ type: "GET_TODOS", payload: {} })
             let response
             if (data) {
-                response = await todoService.getTodo((<any>data).complete)
+                response = await todoService.getTodo({ complete: data?.complete })
+            } else {
+                response = await todoService.getTodo()
             }
-            response = await todoService.getTodo()
-            console.log(response)
             dispatch({ type: "GET_TODOS_SUCCESS", payload: response })
         } catch (err) {
             dispatch({
@@ -60,10 +60,9 @@ export const createTodo = (payload: CreateTodo) => {
 export const toggleTodo = (payload: ToggleTodo) => {
     return async (dispatch: Dispatch<TodoAction>): Promise<void> => {
         try {
-            console.log(payload)
+            dispatch({ type: "TOGGLE_TODO", payload: {} })
             const response = await todoService.updateTodo(payload.id, { complete: payload.complete })
             dispatch({ type: "TOGGLE_TODO_SUCCESS", payload: response })
-            console.log(response)
         } catch (err) {
             dispatch({
                 type: "TOGGLE_TODO_ERROR",

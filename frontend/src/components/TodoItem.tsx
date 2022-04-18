@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, useState } from "react"
 import { useActions } from "../hooks/useActions"
 import { ITodoItem } from "../types/todo"
 import { TodoText } from "./TodoText"

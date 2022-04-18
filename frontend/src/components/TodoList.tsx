@@ -1,12 +1,10 @@
-import React, { FC, useEffect } from "react"
+import React, { FC, MouseEventHandler, useEffect } from "react"
 import { Spinner } from "./Spinner"
 import { TodoItem } from "./TodoItem"
 import { Form } from "./Form"
 import { useTypedSelector } from "../hooks/useTypedSelector"
 import { ITodoItem } from "../types/todo"
 import { useActions } from "../hooks/useActions"
-import { useDispatch } from "react-redux"
-import { getTodo, reset } from "../store/action-creator/todo"
 
 export const TodoList: FC = () => {
 	const {
@@ -15,30 +13,21 @@ export const TodoList: FC = () => {
 		(state) => state.todo
 	)
 
-	// const { getTodo, reset } = useActions()
-	const dispatch = useDispatch()
+
+
+
+	const { getTodo, reset } = useActions()
+
 
 	useEffect(() => {
-		dispatch(getTodo())
+		getTodo()
 		if (isError) {
 			console.log(message)
 		}
 		return () => {
-			dispatch(reset())
+		reset()
 		}
-	}, [isError, message, dispatch])
-
-
-	const statusHandler = (event: React.ChangeEvent<HTMLParagraphElement>) => {
-		const status = event.target.innerText
-		if (status === "completed") {
-			getTodo({ complete: true })
-		} else if (status === "uncompleted") {
-			getTodo({ complete: false })
-		} else if (status === "all") {
-			getTodo()
-		}
-	}
+	}, [isError, message])
 
 	return (
 		<>
@@ -53,13 +42,13 @@ export const TodoList: FC = () => {
 								<TodoItem key={todo._id} todo={todo} />
 							))}
 							<div className="filter-todo">
-								<p onClick={() => statusHandler} id="filter-todo-all">
+								<p onClick={() => getTodo()} id="filter-todo-all">
 									all
 								</p>
-								<p onClick={() => statusHandler} id="filter-todo-completed">
+								<p onClick={() => getTodo({ complete: true })} id="filter-todo-completed">
 									completed
 								</p>
-								<p onClick={() => statusHandler} id="filter-todo-uncompleted">
+								<p onClick={() => getTodo({ complete: false })} id="filter-todo-uncompleted">
 									uncompleted
 								</p>
 							</div>

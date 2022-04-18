@@ -39,7 +39,7 @@ type CreateTodoErrorAction = Action<"CREATE_TODO_ERROR", { error: string }>
 //Toggle todo type
 type ToggleTodoAction = Action<"TOGGLE_TODO", {}>
 type ToggleTodoSuccessAction = Action<"TOGGLE_TODO_SUCCESS", {
-    id: any
+    _id: any
     text: string
     complete: boolean
 }>
@@ -49,7 +49,7 @@ type ToggleTodoErrorAction = Action<"TOGGLE_TODO_ERROR", { error: string }>
 //Delete todo type
 type DeleteTodoAction = Action<"DELETE_TODO", {}>
 type DeleteTodoSuccessAction = Action<"DELETE_TODO_SUCCESS", {
-    id: any
+    _id: any
     text: string
     complete: boolean
 }>
@@ -58,7 +58,7 @@ type DeleteTodoErrorAction = Action<"DELETE_TODO_ERROR", { error: string }>
 //Edit todo type
 type EditTodoAction = Action<"EDIT_TODO", {}>
 type EditTodoSuccessAction = Action<"EDIT_TODO_SUCCESS", {
-    id: any
+    _id: any
     text: string
     complete: boolean
 }>
@@ -67,7 +67,7 @@ type EditTodoErrorAction = Action<"EDIT_TODO_ERROR", { error: string }>
 
 //Reset todo type
 type ResetTodosAction = Action<"RESET_TODOS", {
-    id: any
+    _id: any
     text: string
     complete: boolean
 }>

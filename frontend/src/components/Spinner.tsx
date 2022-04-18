@@ -17,7 +17,7 @@ const props: any = {
 export const Spinner: FC = () => {
 	return (
 		<div className="loader">
-			<Loaded/>
+			<Loaded />
 		</div>
 	)
 }
